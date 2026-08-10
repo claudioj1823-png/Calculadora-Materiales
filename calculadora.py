@@ -2,14 +2,7 @@ import pandas as pd
 
 import streamlit as st
 import os
-import subprocess
-import sys
 
-try:
-    import openpyxl
-except ImportError:
-    subprocess.check_call([sys.executable, "-m", "pip", "install", "openpyxl"])
-    import openpyxl 
 
 st.title("Calculadora de Materiales")
 
