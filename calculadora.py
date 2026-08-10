@@ -1,7 +1,7 @@
 import pandas as pd
 
 import streamlit as st
-
+import os
  
 
 st.title("Calculadora de Materiales")
@@ -16,7 +16,8 @@ def cargar_datos():
 
     try:
 
-        df = pd.read_excel("base_datos.xlsx", sheet_name="UUTT2")
+        ruta_absoluta = os.path.join(os.path.dirname(__file__), "base_datos.xlsx")
+        df = pd.read_excel(ruta_absoluta, sheet_name="UUTT2")
 
         df.columns = df.columns.str.strip()
 
