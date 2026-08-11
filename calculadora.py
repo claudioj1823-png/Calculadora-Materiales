@@ -22,9 +22,9 @@ if df is not None:
     if 'lista_estructuras' not in st.session_state:
         st.session_state.lista_estructuras = []
 
-    # Limpiar y filtrar valores nulos o vacíos de la columna UU_TT
-    df['UU_TT'] = df['UU_TT'].astype(str).str.strip()
-    lista_opciones = sorted([x for x in df['UU_TT'].unique() if x and x.lower() != 'nan'])
+    # Filtrar y limpiar de forma segura para evitar errores con nulos o floats
+    df['UU_TT'] = df['UU_TT'].fillna('').astype(str).str.strip()
+    lista_opciones = sorted([x for x in df['UU_TT'].unique() if x and x.lower() != 'nan' and x.lower() != 'nat'])
 
     col1, col2 = st.columns([3, 1])
     
