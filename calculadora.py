@@ -11,8 +11,6 @@ def cargar_datos():
         ruta_absoluta = os.path.join(os.path.dirname(__file__), "base_datos.xlsx")
         df = pd.read_excel(ruta_absoluta, sheet_name="UUTT2")
         df.columns = df.columns.str.strip()
-        # Limpiar lista de estructuras únicas para el selectbox
-        df['UU_TT'] = df['UU_TT'].astype(str).str.strip()
         return df
     except Exception as e:
         st.error(f"Error al cargar el archivo de Excel: {e}")
@@ -21,12 +19,13 @@ def cargar_datos():
 df = cargar_datos()
 
 if df is not None:
-    # Inicializar estado para guardar las selecciones
     if 'lista_estructuras' not in st.session_state:
         st.session_state.lista_estructuras = []
 
-    # Selector de estructura y cantidad
-    lista_opciones = sorted(df['UU_TT'].unique())
+    # Limpiar y filtrar valores nulos o vacíos de la columna UU_TT
+    df['UU_TT'] = df['UU_TT'].astype(str).str.strip()
+    lista_opciones = sorted([x for x in df['UU_TT'].unique() if x and x.lower() != 'nan'])
+
     col1, col2 = st.columns([3, 1])
     
     with col1:
@@ -37,7 +36,6 @@ if df is not None:
     if st.button("Agregar a la lista"):
         st.session_state.lista_estructuras.append({"Estructura": seleccion_est, "Cantidad": cantidad_est})
 
-    # Mostrar lista actual
     if st.session_state.lista_estructuras:
         st.write("### Estructuras seleccionadas:")
         for i, item in enumerate(st.session_state.lista_estructuras):
